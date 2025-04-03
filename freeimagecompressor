@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free online tools: Image compression, PDF merging, text-to-speech, QR code generation, and file conversion. All tools work directly in your browser.">
+    <meta name="keywords" content="image compressor, PDF merger, text to speech, QR code generator, file converter, online tools">
+    <meta name="author" content="WebToolsPro">
+    <meta property="og:title" content="WebToolsPro | Free Online Utilities">
+    <meta property="og:description" content="Collection of free online tools including image compression, PDF merging, text-to-speech, and QR code generation.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourdomain.com">
+    <meta property="og:image" content="https://yourdomain.com/preview.jpg">
+    <title>WebToolsPro | Free Online Utilities</title>
+    <link rel="canonical" href="https://yourdomain.com">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_ADSENSE_ID" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.16.0/pdf-lib.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4285f4;
+            --secondary-color: #34a853;
+            --accent-color: #ea4335;
+            --yellow-color: #fbbc05;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+            --medium-gray: #757575;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background-color: #f9f9f9;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--accent-color);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-gray);
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--medium-gray);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .tool-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .tool-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .image-tool { color: var(--primary-color); }
+        .pdf-tool { color: var(--accent-color); }
+        .text-tool { color: var(--secondary-color); }
+        .qr-tool { color: var(--yellow-color); }
+        
+        .tool-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark-gray);
+        }
+        
+        .tool-description {
+            color: var(--medium-gray);
+            margin-bottom: 1rem;
+        }
+        
+        /* Tool Containers */
+        .tool-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: none;
+        }
+        
+        .tool-container.active {
+            display: block;
+        }
+        
+        .tool-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .tool-header h2 {
+            font-size: 1.8rem;
+            color: var(--dark-gray);
+            margin-bottom: 0.5rem;
+        }
+        
+        .tool-header p {
+            color: var(--medium-gray);
+        }
+        
+        /* Common tool elements */
+        .upload-area {
+            border: 2px dashed var(--medium-gray);
+            border-radius: var(--border-radius);
+            padding: 3rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(66, 133, 244, 0.05);
+        }
+        
+        .upload-area.active {
+            border-color: var(--secondary-color);
+            background-color: rgba(52, 168, 83, 0.05);
+        }
+        
+        .upload-area i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .upload-area p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .file-info {
+            font-weight: 500;
+            color: var(--primary-color);
+            margin-top: 1rem;
+        }
+        
+        .hidden-input {
+            display: none;
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .control-group {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .slider-container input[type="range"] {
+            flex: 1;
+            height: 8px;
+            -webkit-appearance: none;
+            background: var(--light-gray);
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        .slider-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .slider-value {
+            min-width: 40px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+        
+        .checkbox-group input {
+            margin-right: 0.5rem;
+        }
+        
+        .select-box {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            background-color: white;
+            font-size: 1rem;
+            color: var(--dark-gray);
+            cursor: pointer;
+        }
+        
+        .text-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background-color: #3367d6;
+        }
+        
+        .btn-secondary {
+            background-color: var(--medium-gray);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #616161;
+        }
+        
+        .btn-accent {
+            background-color: var(--accent-color);
+        }
+        
+        .btn-accent:hover {
+            background-color: #d33426;
+        }
+        
+        .btn-success {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-success:hover {
+            background-color: #2d9247;
+        }
+        
+        .btn-warning {
+            background-color: var(--yellow-color);
+        }
+        
+        .btn-warning:hover {
+            background-color: #e0a903;
+        }
+        
+        .btn-disabled {
+            background-color: var(--light-gray);
+            cursor: not-allowed;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .results {
+            display: none;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+        }
+        
+        .results.active {
+            display: block;
+        }
+        
+        .comparison {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .image-container {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .image-container img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+        
+        .image-info {
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background-color: white;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-top: 1.5rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-item .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .stat-item .label {
+            font-size: 0.9rem;
+            color: var(--medium-gray);
+        }
+        
+        .download-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 1.5rem auto 0;
+        }
+        
+        /* PDF Merger specific styles */
+        .pdf-list {
+            margin: 1rem 0;
+        }
+        
+        .pdf-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            margin-bottom: 0.5rem;
+        }
+        
+        .pdf-item i {
+            margin-right: 0.5rem;
+            color: var(--accent-color);
+        }
+        
+        .pdf-item-name {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .pdf-item-size {
+            color: var(--medium-gray);
+            margin: 0 1rem;
+        }
+        
+        .pdf-item-remove {
+            color: var(--accent-color);
+            cursor: pointer;
+        }
+        
+        /* Text to Speech specific styles */
+        .voice-selector {
+            margin-bottom: 1rem;
+        }
+        
+        .voice-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .voice-option {
+            padding: 0.5rem 1rem;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+        }
+        
+        .voice-option.selected {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .playback-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        /* QR Code specific styles */
+        .qr-code-container {
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        #qr-code {
+            margin: 0 auto;
+            background-color: white;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+        
+        .qr-color-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .color-picker {
+            flex: 1;
+        }
+        
+        .ad-container {
+            margin: 2rem 0;
+            text-align: center;
+            background-color: white;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+        
+        .ad-label {
+            font-size: 0.8rem;
+            color: var(--medium-gray);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .back-to-tools {
+            display: block;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .back-to-tools:hover {
+            text-decoration: underline;
+        }
+        
+        footer {
+            background-color: var(--dark-gray);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            width: 100%;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #444;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .loading.active {
+            display: block;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+            }
+            
+            nav ul li {
+                margin: 0 0.75rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .qr-color-controls {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .comparison {
+                flex-direction: column;
+            }
+            
+            .image-container {
+                min-width: 100%;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="/" class="logo">Web<span>Tools</span>Pro</a>
+            <nav>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section class="hero">
+            <h1>Free Online Tools for Your Daily Needs</h1>
+            <p>Optimize your workflow with our collection of free tools. All utilities work directly in your browser - no uploads to servers, your files never leave your device.</p>
+        </section>
+        
+        <div class="ad-container">
+            <div class="ad-label">Advertisement</div>
+            <!-- Replace with your AdSense ad unit -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-YOUR_ADSENSE_ID"
+                 data-ad-slot="YOUR_AD_SLOT_ID"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        
+        <section id="tools">
+            <h2 class="section-title">Our Tools</h2>
+            <div class="tools-grid">
+                <div class="tool-card" data-tool="image-compressor">
+                    <div class="tool-icon image-tool">🖼️</div>
+                    <h3 class="tool-title">Image Compressor</h3>
+                    <p class="tool-description">Reduce image file sizes without losing quality. Supports JPG, PNG, GIF, and WebP formats.</p>
+                </div>
+                
+                <div class="tool-card" data-tool="pdf-merger">
+                    <div class="tool-icon pdf-tool">📄</div>
+                    <h3 class="tool-title">PDF Merger</h3>
+                    <p class="tool-description">Combine multiple PDF files into one document. Perfect for organizing your documents.</p>
+                </div>
+                
+                <div class="tool-card" data-tool="text-to-speech">
+                    <div class="tool-icon text-tool">🔊</div>
+                    <h3 class="tool-title">Text to Speech</h3>
+                    <p class="tool-description">Convert any text to natural sounding speech. Listen to documents, articles, and more.</p>
+                </div>
+                
+                <div class="tool-card" data-tool="qr-generator">
+                    <div class="tool-icon qr-tool">🔳</div>
+                    <h3 class="tool-title">QR Code Generator</h3>
+                    <p class="tool-description">Create custom QR codes for URLs, contact info, WiFi credentials, and more.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Image Compressor Tool -->
+        <div id="image-compressor-tool" class="tool-container">
+            <a href="#" class="back-to-tools">← Back to all tools</a>
+            <div class="tool-header">
+                <h2>Image Compression Tool</h2>
+                <p>Reduce image file sizes without sacrificing quality</p>
+            </div>
+            
+            <div class="upload-area" id="image-upload-area">
+                <i>📁</i>
+                <p>Drag & drop your images here or click to browse</p>
+                <p class="file-info" id="image-file-info">No files selected</p>
+                <input type="file" id="image-file-input" accept="image/jpeg, image/png, image/gif, image/webp" multiple class="hidden-input">
+            </div>
+            
+            <div class="controls">
+                <div class="control-group">
+                    <label for="image-quality">Compression Level</label>
+                    <div class="slider-container">
+                        <input type="range" id="image-quality" min="0" max="100" value="80">
+                        <span class="slider-value" id="image-quality-value">80%</span>
+                    </div>
+                    <p class="hint">Higher values = better quality, larger files</p>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="lossless" name="lossless">
+                        <label for="lossless">Lossless compression</label>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label for="image-format">Output Format</label>
+                    <select id="image-format" class="select-box">
+                        <option value="original">Original Format</option>
+                        <option value="jpeg">JPEG</option>
+                        <option value="png">PNG</option>
+                        <option value="webp">WEBP</option>
+                    </select>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="preserve-metadata" name="preserve-metadata" checked>
+                        <label for="preserve-metadata">Preserve metadata</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="compress-btn" class="btn btn-disabled" disabled>Compress Images</button>
+                <button id="image-reset-btn" class="btn btn-secondary">Reset</button>
+            </div>
+            
+            <div class="loading" id="image-loading">
+                <div class="spinner"></div>
+                <p>Compressing your images...</p>
+            </div>
+            
+            <div class="results" id="image-results">
+                <h3>Compression Results</h3>
+                <div class="comparison">
+                    <div class="image-container">
+                        <img id="original-img" src="" alt="Original Image">
+                        <div class="image-info">
+                            <p>Original Image</p>
+                        </div>
+                    </div>
+                    <div class="image-container">
+                        <img id="compressed-img" src="" alt="Compressed Image">
+                        <div class="image-info">
+                            <p>Compressed Image</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="value" id="original-size">0 KB</div>
+                        <div class="label">Original Size</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="value" id="compressed-size">0 KB</div>
+                        <div class="label">Compressed Size</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="value" id="reduction">0%</div>
+                        <div class="label">Reduction</div>
+                    </div>
+                </div>
+                
+                <button id="image-download-btn" class="btn download-btn">Download Compressed Image</button>
+                <button id="image-download-all-btn" class="btn download-btn" style="display: none;">Download All Images</button>
+            </div>
+        </div>
+        
+        <!-- PDF Merger Tool -->
+        <div id="pdf-merger-tool" class="tool-container">
+            <a href="#" class="back-to-tools">← Back to all tools</a>
+            <div class="tool-header">
+                <h2>PDF Merger Tool</h2>
+                <p>Combine multiple PDF files into one document</p>
+            </div>
+            
+            <div class="upload-area" id="pdf-upload-area">
+                <i>📄</i>
+                <p>Drag & drop your PDF files here or click to browse</p>
+                <p class="file-info" id="pdf-file-info">No files selected</p>
+                <input type="file" id="pdf-file-input" accept=".pdf" multiple class="hidden-input">
+            </div>
+            
+            <div class="pdf-list" id="pdf-list">
+                <!-- PDF files will be listed here -->
+            </div>
+            
+            <div class="controls">
+                <div class="control-group">
+                    <label for="pdf-output-name">Output Filename</label>
+                    <input type="text" id="pdf-output-name" class="text-input" placeholder="merged-document.pdf">
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="merge-pdf-btn" class="btn btn-accent btn-disabled" disabled>Merge PDFs</button>
+                <button id="pdf-reset-btn" class="btn btn-secondary">Reset</button>
+            </div>
+            
+            <div class="loading" id="pdf-loading">
+                <div class="spinner"></div>
+                <p>Merging your PDFs...</p>
+            </div>
+            
+            <div class="results" id="pdf-results">
+                <h3>Merge Complete</h3>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="value" id="pdf-count">0</div>
+                        <div class="label">PDFs Merged</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="value" id="pdf-total-size">0 KB</div>
+                        <div class="label">Total Size</div>
+                    </div>
+                </div>
+                <button id="pdf-download-btn" class="btn download-btn">Download Merged PDF</button>
+            </div>
+        </div>
+        
+        <!-- Text to Speech Tool -->
+        <div id="text-to-speech-tool" class="tool-container">
+            <a href="#" class="back-to-tools">← Back to all tools</a>
+            <div class="tool-header">
+                <h2>Text to Speech Tool</h2>
+                <p>Convert any text to natural sounding speech</p>
+            </div>
+            
+            <div class="controls">
+                <div class="control-group">
+                    <label for="tts-text">Enter your text</label>
+                    <textarea id="tts-text" class="text-input" rows="6" placeholder="Enter the text you want to convert to speech..."></textarea>
+                </div>
+                
+                <div class="control-group voice-selector">
+                    <label>Select Voice</label>
+                    <div class="voice-options" id="voice-options">
+                        <!-- Voices will be populated here -->
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label for="tts-rate">Speech Rate</label>
+                    <div class="slider-container">
+                        <input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1">
+                        <span class="slider-value" id="tts-rate-value">1</span>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label for="tts-pitch">Speech Pitch</label>
+                    <div class="slider-container">
+                        <input type="range" id="tts-pitch" min="0.5" max="2" step="0.1" value="1">
+                        <span class="slider-value" id="tts-pitch-value">1</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="play-tts-btn" class="btn btn-success">Play Speech</button>
+                <button id="stop-tts-btn" class="btn btn-accent">Stop</button>
+                <button id="tts-reset-btn" class="btn btn-secondary">Reset</button>
+            </div>
+            
+            <div class="playback-controls">
+                <button id="download-tts-btn" class="btn download-btn">Download as MP3</button>
+            </div>
+        </div>
+        
+        <!-- QR Code Generator Tool -->
+        <div id="qr-generator-tool" class="tool-container">
+            <a href="#" class="back-to-tools">← Back to all tools</a>
+            <div class="tool-header">
+                <h2>QR Code Generator</h2>
+                <p>Create custom QR codes for any purpose</p>
+            </div>
+            
+            <div class="controls">
+                <div class="control-group">
+                    <label for="qr-content">QR Code Content</label>
+                    <input type="text" id="qr-content" class="text-input" placeholder="https://example.com">
+                </div>
+                
+                <div class="control-group">
+                    <label for="qr-size">QR Code Size</label>
+                    <select id="qr-size" class="select-box">
+                        <option value="100">Small (100x100)</option>
+                        <option value="200" selected>Medium (200x200)</option>
+                        <option value="300">Large (300x300)</option>
+                        <option value="400">Extra Large (400x400)</option>
+                    </select>
+                </div>
+                
+                <div class="qr-color-controls">
+                    <div class="control-group color-picker">
+                        <label for="qr-fg-color">Foreground Color</label>
+                        <input type="color" id="qr-fg-color" value="#000000" class="select-box">
+                    </div>
+                    <div class="control-group color-picker">
+                        <label for="qr-bg-color">Background Color</label>
+                        <input type="color" id="qr-bg-color" value="#ffffff" class="select-box">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="generate-qr-btn" class="btn btn-warning">Generate QR Code</button>
+                <button id="qr-reset-btn" class="btn btn-secondary">Reset</button>
+            </div>
+            
+            <div class="results" id="qr-results">
+                <h3>Your QR Code</h3>
+                <div class="qr-code-container">
+                    <canvas id="qr-code"></canvas>
+                </div>
+                <button id="download-qr-btn" class="btn download-btn">Download QR Code</button>
+            </div>
+        </div>
+        
+        <div class="ad-container">
+            <div class="ad-label">Advertisement</div>
+            <!-- Replace with your AdSense ad unit -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-YOUR_ADSENSE_ID"
+                 data-ad-slot="YOUR_AD_SLOT_ID"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        
+        <section id="features" class="features-section">
+            <h2 class="section-title">Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">Privacy Focused</h3>
+                    <p>All tools work directly in your browser. Your files never leave your device, ensuring complete privacy.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Fast Processing</h3>
+                    <p>No waiting for server processing. Our tools work instantly in your browser for maximum speed.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💯</div>
+                    <h3 class="feature-title">100% Free</h3>
+                    <p>All tools are completely free to use with no hidden fees or watermarks on your files.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3 class="feature-title">Mobile Friendly</h3>
+                    <p>Works perfectly on all devices including smartphones and tablets.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="how-it-works" class="how-it-works-section">
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Choose Your Tool</h3>
+                        <p>Select from our collection of useful utilities including image compression, PDF merging, text-to-speech, and QR code generation.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Upload or Input Your Content</h3>
+                        <p>Depending on the tool, either upload your files or enter the content you want to process.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Adjust Settings</h3>
+                        <p>Customize the processing with various options to get exactly the result you need.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Download or Save Your Result</h3>
+                        <p>Get your processed files instantly with no waiting. All processing happens in your browser.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="faq" class="faq-section">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <h3 class="faq-question">Are my files uploaded to your servers?</h3>
+                    <p class="faq-answer">No! All processing happens directly in your browser. Your files never leave your device, ensuring complete privacy.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">Is there a limit to file sizes I can process?</h3>
+                    <p class="faq-answer">Since processing happens in your browser, limits depend on your device's memory. For best results, we recommend files under 50MB each.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">Do I need to create an account?</h3>
+                    <p class="faq-answer">No accounts needed! All tools are available immediately with no registration required.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">Can I use these tools on my phone?</h3>
+                    <p class="faq-answer">Absolutely! Our tools are fully responsive and work perfectly on mobile devices.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">Are there any hidden costs?</h3>
+                    <p class="faq-answer">No, all tools are completely free to use with no hidden fees or premium versions.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="contact" class="contact-section">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-info">
+                <p>We're here to help! If you have any questions or feedback about our tools, please don't hesitate to get in touch.</p>
+                <p>For support or inquiries, please email us at:</p>
+                <a href="mailto:narayanmanju00@gmail.com" class="contact-email">narayanmanju00@gmail.com</a>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>WebToolsPro</h3>
+                <p>Free online tools for your daily needs. Privacy focused, fast, and easy to use.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                </ul>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 WebToolsPro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tool navigation
+            const toolCards = document.querySelectorAll('.tool-card');
+            const toolContainers = document.querySelectorAll('.tool-container');
+            
+            toolCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const toolId = this.getAttribute('data-tool');
+                    
+                    // Hide all tool containers
+                    toolContainers.forEach(container => {
+                        container.classList.remove('active');
+                    });
+                    
+                    // Show selected tool
+                    document.getElementById(`${toolId}-tool`).classList.add('active');
+                    
+                    // Scroll to tool
+                    document.getElementById(`${toolId}-tool`).scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+            
+            // Back to tools links
+            const backLinks = document.querySelectorAll('.back-to-tools');
+            backLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Hide all tool containers
+                    toolContainers.forEach(container => {
+                        container.classList.remove('active');
+                    });
+                    
+                    // Scroll to tools section
+                    document.getElementById('tools').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+            
+            // Initialize all tools
+            initImageCompressor();
+            initPdfMerger();
+            initTextToSpeech();
+            initQrGenerator();
+            
+            /* Image Compressor Tool */
+            function initImageCompressor() {
+                // DOM elements
+                const uploadArea = document.getElementById('image-upload-area');
+                const fileInput = document.getElementById('image-file-input');
+                const fileInfo = document.getElementById('image-file-info');
+                const qualitySlider = document.getElementById('image-quality');
+                const qualityValue = document.getElementById('image-quality-value');
+                const formatSelect = document.getElementById('image-format');
+                const losslessCheckbox = document.getElementById('lossless');
+                const compressBtn = document.getElementById('compress-btn');
+                const resetBtn = document.getElementById('image-reset-btn');
+                const loading = document.getElementById('image-loading');
+                const results = document.getElementById('image-results');
+                const originalImg = document.getElementById('original-img');
+                const compressedImg = document.getElementById('compressed-img');
+                const originalSize = document.getElementById('original-size');
+                const compressedSize = document.getElementById('compressed-size');
+                const reduction = document.getElementById('reduction');
+                const downloadBtn = document.getElementById('image-download-btn');
+                const downloadAllBtn = document.getElementById('image-download-all-btn');
+                
+                // Variables
+                let selectedFiles = [];
+                let compressedImages = [];
+                
+                // Event listeners
+                uploadArea.addEventListener('click', () => fileInput.click());
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.add('active');
+                });
+                uploadArea.addEventListener('dragleave', () => {
+                    uploadArea.classList.remove('active');
+                });
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('active');
+                    if (e.dataTransfer.files.length) {
+                        handleFileSelect(e.dataTransfer.files);
+                    }
+                });
+                
+                fileInput.addEventListener('change', () => {
+                    if (fileInput.files.length) {
+                        handleFileSelect(fileInput.files);
+                    }
+                });
+                
+                qualitySlider.addEventListener('input', () => {
+                    qualityValue.textContent = `${qualitySlider.value}%`;
+                    if (losslessCheckbox.checked && qualitySlider.value < 100) {
+                        losslessCheckbox.checked = false;
+                    }
+                });
+                
+                losslessCheckbox.addEventListener('change', () => {
+                    if (losslessCheckbox.checked) {
+                        qualitySlider.value = 100;
+                        qualityValue.textContent = '100%';
+                    }
+                });
+                
+                compressBtn.addEventListener('click', compressImages);
+                resetBtn.addEventListener('click', resetTool);
+                downloadBtn.addEventListener('click', downloadImage);
+                downloadAllBtn.addEventListener('click', downloadAllImages);
+                
+                // Functions
+                function handleFileSelect(files) {
+                    selectedFiles = Array.from(files).filter(file => 
+                        file.type.match('image.*') && 
+                        ['image/jpeg', 'image/png', 'image/gif', 'image/webp'].includes(file.type)
+                    );
+                    
+                    if (selectedFiles.length === 0) {
+                        alert('Please select image files (JPEG, PNG, GIF, or WEBP).');
+                        return;
+                    }
+                    
+                    if (selectedFiles.length === 1) {
+                        fileInfo.textContent = `${selectedFiles[0].name} (${formatBytes(selectedFiles[0].size)})`;
+                    } else {
+                        fileInfo.textContent = `${selectedFiles.length} files selected (${formatBytes(selectedFiles.reduce((total, file) => total + file.size, 0))})`;
+                    }
+                    
+                    compressBtn.classList.remove('btn-disabled');
+                    compressBtn.disabled = false;
+                    
+                    // Display first image preview
+                    if (selectedFiles.length > 0) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            originalImg.src = e.target.result;
+                        };
+                        reader.readAsDataURL(selectedFiles[0]);
+                    }
+                }
+                
+                function compressImages() {
+                    if (selectedFiles.length === 0) return;
+                    
+                    // Show loading state
+                    loading.classList.add('active');
+                    results.classList.remove('active');
+                    downloadAllBtn.style.display = selectedFiles.length > 1 ? 'block' : 'none';
+                    
+                    // Process all images
+                    compressedImages = [];
+                    let processedCount = 0;
+                    
+                    selectedFiles.forEach((file, index) => {
+                        const quality = losslessCheckbox.checked ? 1 : parseInt(qualitySlider.value) / 100;
+                        const format = formatSelect.value === 'original' 
+                            ? file.type.split('/')[1] 
+                            : formatSelect.value;
+                        
+                        // Create canvas to compress image
+                        const img = new Image();
+                        img.onload = function() {
+                            const canvas = document.createElement('canvas');
+                            const ctx = canvas.getContext('2d');
+                            
+                            // Calculate new dimensions if needed (for very large images)
+                            let width = img.width;
+                            let height = img.height;
+                            const maxDimension = 2000; // Max width/height
+                            
+                            if (width > height && width > maxDimension) {
+                                height *= maxDimension / width;
+                                width = maxDimension;
+                            } else if (height > maxDimension) {
+                                width *= maxDimension / height;
+                                height = maxDimension;
+                            }
+                            
+                            canvas.width = width;
+                            canvas.height = height;
+                            
+                            // Draw image on canvas
+                            ctx.drawImage(img, 0, 0, width, height);
+                            
+                            // Compress image
+                            canvas.toBlob((blob) => {
+                                processedCount++;
+                                
+                                compressedImages.push({
+                                    originalFile: file,
+                                    compressedBlob: blob,
+                                    originalSize: file.size,
+                                    compressedSize: blob.size
+                                });
+                                
+                                // When all images are processed
+                                if (processedCount === selectedFiles.length) {
+                                    displayResults();
+                                }
+                                
+                            }, `image/${format}`, quality);
+                        };
+                        
+                        img.src = URL.createObjectURL(file);
+                    });
+                }
+                
+                function displayResults() {
+                    if (compressedImages.length === 0) return;
+                    
+                    // Display first image results
+                    const firstResult = compressedImages[0];
+                    const compressedUrl = URL.createObjectURL(firstResult.compressedBlob);
+                    compressedImg.src = compressedUrl;
+                    
+                    // Update stats
+                    originalSize.textContent = formatBytes(firstResult.originalSize);
+                    compressedSize.textContent = formatBytes(firstResult.compressedSize);
+                    
+                    const reductionPercent = ((firstResult.originalSize - firstResult.compressedSize) / firstResult.originalSize * 100).toFixed(1);
+                    reduction.textContent = `${reductionPercent}%`;
+                    
+                    // Show results
+                    loading.classList.remove('active');
+                    results.classList.add('active');
+                    
+                    // Scroll to results
+                    results.scrollIntoView({ behavior: 'smooth' });
+                }
+                
+                function downloadImage() {
+                    if (compressedImages.length === 0) return;
+                    
+                    const firstResult = compressedImages[0];
+                    const url = URL.createObjectURL(firstResult.compressedBlob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    
+                    // Get original filename without extension
+                    const originalName = firstResult.originalFile.name.split('.').slice(0, -1).join('.');
+                    const format = formatSelect.value === 'original' 
+                        ? firstResult.originalFile.type.split('/')[1] 
+                        : formatSelect.value;
+                    
+                    a.download = `${originalName}-compressed.${format}`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }
+                
+                function downloadAllImages() {
+                    if (compressedImages.length <= 1) return;
+                    
+                    // Create a zip file if there are multiple images
+                    alert('Batch download feature would be implemented with a library like JSZip in a production environment. This would create a ZIP file containing all compressed images.');
+                    
+                    // In a real implementation, we would use JSZip or similar to create a zip file
+                    // For this demo, we'll download each file individually
+                    compressedImages.forEach((result, index) => {
+                        const url = URL.createObjectURL(result.compressedBlob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        
+                        const originalName = result.originalFile.name.split('.').slice(0, -1).join('.');
+                        const format = formatSelect.value === 'original' 
+                            ? result.originalFile.type.split('/')[1] 
+                            : formatSelect.value;
+                        
+                        a.download = `${originalName}-compressed.${format}`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    });
+                }
+                
+                function resetTool() {
+                    selectedFiles = [];
+                    compressedImages = [];
+                    fileInput.value = '';
+                    fileInfo.textContent = 'No files selected';
+                    qualitySlider.value = 80;
+                    qualityValue.textContent = '80%';
+                    formatSelect.value = 'original';
+                    losslessCheckbox.checked = false;
+                    compressBtn.classList.add('btn-disabled');
+                    compressBtn.disabled = true;
+                    loading.classList.remove('active');
+                    results.classList.remove('active');
+                    originalImg.src = '';
+                    compressedImg.src = '';
+                    downloadAllBtn.style.display = 'none';
+                }
+            }
+            
+            /* PDF Merger Tool */
+            function initPdfMerger() {
+                // DOM elements
+                const uploadArea = document.getElementById('pdf-upload-area');
+                const fileInput = document.getElementById('pdf-file-input');
+                const fileInfo = document.getElementById('pdf-file-info');
+                const pdfList = document.getElementById('pdf-list');
+                const outputName = document.getElementById('pdf-output-name');
+                const mergeBtn = document.getElementById('merge-pdf-btn');
+                const resetBtn = document.getElementById('pdf-reset-btn');
+                const loading = document.getElementById('pdf-loading');
+                const results = document.getElementById('pdf-results');
+                const pdfCount = document.getElementById('pdf-count');
+                const pdfTotalSize = document.getElementById('pdf-total-size');
+                const downloadBtn = document.getElementById('pdf-download-btn');
+                
+                // Variables
+                let pdfFiles = [];
+                let mergedPdf = null;
+                
+                // Event listeners
+                uploadArea.addEventListener('click', () => fileInput.click());
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.add('active');
+                });
+                uploadArea.addEventListener('dragleave', () => {
+                    uploadArea.classList.remove('active');
+                });
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('active');
+                    if (e.dataTransfer.files.length) {
+                        handleFileSelect(e.dataTransfer.files);
+                    }
+                });
+                
+                fileInput.addEventListener('change', () => {
+                    if (fileInput.files.length) {
+                        handleFileSelect(fileInput.files);
+                    }
+                });
+                
+                mergeBtn.addEventListener('click', mergePdfs);
+                resetBtn.addEventListener('click', resetTool);
+                downloadBtn.addEventListener('click', downloadPdf);
+                
+                // Functions
+                function handleFileSelect(files) {
+                    const newPdfs = Array.from(files).filter(file => file.type === 'application/pdf');
+                    
+                    if (newPdfs.length === 0) {
+                        alert('Please select PDF files.');
+                        return;
+                    }
+                    
+                    pdfFiles = [...pdfFiles, ...newPdfs];
+                    updateFileList();
+                    updateFileInfo();
+                    
+                    if (pdfFiles.length > 0) {
+                        mergeBtn.classList.remove('btn-disabled');
+                        mergeBtn.disabled = false;
+                    }
+                }
+                
+                function updateFileList() {
+                    pdfList.innerHTML = '';
+                    
+                    pdfFiles.forEach((file, index) => {
+                        const item = document.createElement('div');
+                        item.className = 'pdf-item';
+                        item.innerHTML = `
+                            <i>📄</i>
+                            <span class="pdf-item-name">${file.name}</span>
+                            <span class="pdf-item-size">${formatBytes(file.size)}</span>
+                            <span class="pdf-item-remove" data-index="${index}">✕</span>
+                        `;
+                        pdfList.appendChild(item);
+                    });
+                    
+                    // Add event listeners to remove buttons
+                    document.querySelectorAll('.pdf-item-remove').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const index = parseInt(this.getAttribute('data-index'));
+                            pdfFiles.splice(index, 1);
+                            updateFileList();
+                            updateFileInfo();
+                            
+                            if (pdfFiles.length === 0) {
+                                mergeBtn.classList.add('btn-disabled');
+                                mergeBtn.disabled = true;
+                            }
+                        });
+                    });
+                }
+                
+                function updateFileInfo() {
+                    if (pdfFiles.length === 0) {
+                        fileInfo.textContent = 'No files selected';
+                    } else if (pdfFiles.length === 1) {
+                        fileInfo.textContent = `${pdfFiles[0].name} (${formatBytes(pdfFiles[0].size)})`;
+                    } else {
+                        const totalSize = pdfFiles.reduce((total, file) => total + file.size, 0);
+                        fileInfo.textContent = `${pdfFiles.length} files selected (${formatBytes(totalSize)})`;
+                    }
+                }
+                
+                async function mergePdfs() {
+                    if (pdfFiles.length === 0) return;
+                    
+                    loading.classList.add('active');
+                    results.classList.remove('active');
+                    
+                    try {
+                        const { PDFDocument } = PDFLib;
+                        const mergedPdfDoc = await PDFDocument.create();
+                        
+                        // Merge all PDFs
+                        for (const file of pdfFiles) {
+                            const fileBytes = await readFileAsArrayBuffer(file);
+                            const pdfDoc = await PDFDocument.load(fileBytes);
+                            const pages = await mergedPdfDoc.copyPages(pdfDoc, pdfDoc.getPageIndices());
+                            pages.forEach(page => mergedPdfDoc.addPage(page));
+                        }
+                        
+                        const mergedPdfBytes = await mergedPdfDoc.save();
+                        mergedPdf = new Blob([mergedPdfBytes], { type: 'application/pdf' });
+                        
+                        // Update results
+                        pdfCount.textContent = pdfFiles.length;
+                        const totalSize = pdfFiles.reduce((total, file) => total + file.size, 0);
+                        pdfTotalSize.textContent = formatBytes(totalSize);
+                        
+                        loading.classList.remove('active');
+                        results.classList.add('active');
+                        results.scrollIntoView({ behavior: 'smooth' });
+                    } catch (error) {
+                        console.error('Error merging PDFs:', error);
+                        alert('An error occurred while merging the PDFs. Please try again.');
+                        loading.classList.remove('active');
+                    }
+                }
+                
+                function readFileAsArrayBuffer(file) {
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = reject;
+                        reader.readAsArrayBuffer(file);
+                    });
+                }
+                
+                function downloadPdf() {
+                    if (!mergedPdf) return;
+                    
+                    const url = URL.createObjectURL(mergedPdf);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    
+                    let filename = 'merged.pdf';
+                    if (outputName.value.trim() !== '') {
+                        filename = outputName.value.trim();
+                        if (!filename.toLowerCase().endsWith('.pdf')) {
+                            filename += '.pdf';
+                        }
+                    }
+                    
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }
+                
+                function resetTool() {
+                    pdfFiles = [];
+                    mergedPdf = null;
+                    fileInput.value = '';
+                    fileInfo.textContent = 'No files selected';
+                    pdfList.innerHTML = '';
+                    outputName.value = 'merged-document.pdf';
+                    mergeBtn.classList.add('btn-disabled');
+                    mergeBtn.disabled = true;
+                    loading.classList.remove('active');
+                    results.classList.remove('active');
+                }
+            }
+            
+            /* Text to Speech Tool */
+            function initTextToSpeech() {
+                // DOM elements
+                const textInput = document.getElementById('tts-text');
+                const voiceOptions = document.getElementById('voice-options');
+                const rateSlider = document.getElementById('tts-rate');
+                const rateValue = document.getElementById('tts-rate-value');
+                const pitchSlider = document.getElementById('tts-pitch');
+                const pitchValue = document.getElementById('tts-pitch-value');
+                const playBtn = document.getElementById('play-tts-btn');
+                const stopBtn = document.getElementById('stop-tts-btn');
+                const resetBtn = document.getElementById('tts-reset-btn');
+                const downloadBtn = document.getElementById('download-tts-btn');
+                
+                // Variables
+                let voices = [];
+                let selectedVoice = null;
+                let speechSynthesis = window.speechSynthesis;
+                let utterance = null;
+                let audioChunks = [];
+                let mediaRecorder = null;
+                
+                // Event listeners
+                rateSlider.addEventListener('input', () => {
+                    rateValue.textContent = rateSlider.value;
+                });
+                
+                pitchSlider.addEventListener('input', () => {
+                    pitchValue.textContent = pitchSlider.value;
+                });
+                
+                playBtn.addEventListener('click', playSpeech);
+                stopBtn.addEventListener('click', stopSpeech);
+                resetBtn.addEventListener('click', resetTool);
+                downloadBtn.addEventListener('click', downloadSpeech);
+                
+                // Initialize voices
+                speechSynthesis.onvoiceschanged = function() {
+                    voices = speechSynthesis.getVoices();
+                    populateVoiceOptions();
+                };
+                
+                // For Chrome that doesn't fire voiceschanged event
+                setTimeout(() => {
+                    voices = speechSynthesis.getVoices();
+                    if (voices.length > 0 && voiceOptions.children.length === 0) {
+                        populateVoiceOptions();
+                    }
+                }, 1000);
+                
+                // Functions
+                function populateVoiceOptions() {
+                    voiceOptions.innerHTML = '';
+                    
+                    voices.forEach((voice, index) => {
+                        const option = document.createElement('div');
+                        option.className = 'voice-option';
+                        option.textContent = `${voice.name} (${voice.lang})`;
+                        option.setAttribute('data-index', index);
+                        
+                        option.addEventListener('click', function() {
+                            document.querySelectorAll('.voice-option').forEach(opt => {
+                                opt.classList.remove('selected');
+                            });
+                            this.classList.add('selected');
+                            selectedVoice = voices[parseInt(this.getAttribute('data-index'))];
+                        });
+                        
+                        // Select first English voice by default
+                        if (index === 0 || voice.lang.startsWith('en')) {
+                            option.classList.add('selected');
+                            selectedVoice = voice;
+                        }
+                        
+                        voiceOptions.appendChild(option);
+                    });
+                }
+                
+                function playSpeech() {
+                    if (textInput.value.trim() === '') {
+                        alert('Please enter some text to convert to speech.');
+                        return;
+                    }
+                    
+                    stopSpeech();
+                    
+                    utterance = new SpeechSynthesisUtterance(textInput.value);
+                    
+                    if (selectedVoice) {
+                        utterance.voice = selectedVoice;
+                    }
+                    
+                    utterance.rate = parseFloat(rateSlider.value);
+                    utterance.pitch = parseFloat(pitchSlider.value);
+                    
+                    // Start recording for download (simulated in this demo)
+                    // In a real implementation, you would use the Web Audio API or a service
+                    
+                    speechSynthesis.speak(utterance);
+                }
+                
+                function stopSpeech() {
+                    if (speechSynthesis.speaking) {
+                        speechSynthesis.cancel();
+                    }
+                }
+                
+                function downloadSpeech() {
+                    if (textInput.value.trim() === '') {
+                        alert('Please enter some text to convert to speech.');
+                        return;
+                    }
+                    
+                    alert('In a production environment, this would use the Web Audio API to record the speech synthesis and save as an MP3 file. For this demo, we\'re simulating the download.');
+                    
+                    // Simulate download (in real implementation, this would be the recorded audio)
+                    const blob = new Blob([textInput.value], { type: 'text/plain' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'speech.mp3';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }
+                
+                function resetTool() {
+                    textInput.value = '';
+                    rateSlider.value = 1;
+                    rateValue.textContent = '1';
+                    pitchSlider.value = 1;
+                    pitchValue.textContent = '1';
+                    stopSpeech();
+                    
+                    // Reselect first voice
+                    if (voiceOptions.children.length > 0) {
+                        document.querySelectorAll('.voice-option').forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        voiceOptions.children[0].classList.add('selected');
+                        selectedVoice = voices[0];
+                    }
+                }
+            }
+            
+            /* QR Code Generator Tool */
+            function initQrGenerator() {
+                // DOM elements
+                const contentInput = document.getElementById('qr-content');
+                const sizeSelect = document.getElementById('qr-size');
+                const fgColor = document.getElementById('qr-fg-color');
+                const bgColor = document.getElementById('qr-bg-color');
+                const generateBtn = document.getElementById('generate-qr-btn');
+                const resetBtn = document.getElementById('qr-reset-btn');
+                const downloadBtn = document.getElementById('download-qr-btn');
+                const qrCanvas = document.getElementById('qr-code');
+                const results = document.getElementById('qr-results');
+                
+                // Event listeners
+                generateBtn.addEventListener('click', generateQrCode);
+                resetBtn.addEventListener('click', resetTool);
+                downloadBtn.addEventListener('click', downloadQrCode);
+                
+                // Functions
+                function generateQrCode() {
+                    if (contentInput.value.trim() === '') {
+                        alert('Please enter content for the QR code.');
+                        return;
+                    }
+                    
+                    const size = parseInt(sizeSelect.value);
+                    const options = {
+                        width: size,
+                        height: size,
+                        color: {
+                            dark: fgColor.value,
+                            light: bgColor.value
+                        }
+                    };
+                    
+                    QRCode.toCanvas(qrCanvas, contentInput.value, options, (error) => {
+                        if (error) {
+                            console.error('Error generating QR code:', error);
+                            alert('An error occurred while generating the QR code. Please try again.');
+                        } else {
+                            results.classList.add('active');
+                            results.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    });
+                }
+                
+                function downloadQrCode() {
+                    if (contentInput.value.trim() === '') {
+                        alert('Please generate a QR code first.');
+                        return;
+                    }
+                    
+                    const link = document.createElement('a');
+                    link.download = 'qr-code.png';
+                    link.href = qrCanvas.toDataURL('image/png');
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+                
+                function resetTool() {
+                    contentInput.value = '';
+                    sizeSelect.value = '200';
+                    fgColor.value = '#000000';
+                    bgColor.value = '#ffffff';
+                    results.classList.remove('active');
+                    const ctx = qrCanvas.getContext('2d');
+                    ctx.clearRect(0, 0, qrCanvas.width, qrCanvas.height);
+                }
+            }
+            
+            /* Helper Functions */
+            function formatBytes(bytes, decimals = 2) {
+                if (bytes === 0) return '0 Bytes';
+                
+                const k = 1024;
+                const dm = decimals < 0 ? 0 : decimals;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+            }
+        });
+    </script>
+    
+    <!-- Structured data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "WebToolsPro",
+      "url": "https://yourdomain.com",
+      "description": "Collection of free online tools including image compression, PDF merging, text-to-speech, and QR code generation. All tools work directly in your browser.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "creator": {
+        "@type": "Organization",
+        "name": "WebToolsPro"
+      },
+      "featureList": [
+        "Image Compression",
+        "PDF Merging",
+        "Text to Speech",
+        "QR Code Generation",
+        "Privacy Focused",
+        "Browser-Based Processing"
+      ]
+    }
+    </script>
+</body>
+</html>
